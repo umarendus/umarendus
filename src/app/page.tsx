@@ -1,40 +1,47 @@
-import Header from "../components/Header";
+"use client";
 
-export default function Home() {
+import Image from "next/image";
+
+export default function LandingPageBW() {
   return (
-    <div className="min-h-screen">
-      <Header />
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
       
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%), 
-                             url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23D4C5A9'/%3E%3Ctext x='400' y='300' font-size='48' text-anchor='middle' fill='%23A0907A'%3EWorkspace Background%3C/text%3E%3C/svg%3E")`
-          }}
-        />
-        
-        {/* Content Overlay */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl hero-content">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-              Aitame väikeettevõtetel{" "}
-              <span className="block">nähtavaks saada</span>
-            </h1>
-            
-            <p className="text-lg md:text-xl text-white/90 mb-10 max-w-lg">
-              Loome AI-toega kaasaegseid veebilehti, 
-              mis aitavad sul jõuda klientideni soodsama hinnaga.
-            </p>
-            
-            <button className="bg-gray-900/80 hover:bg-gray-900 text-white px-10 py-4 rounded-lg font-medium transition-all duration-300 backdrop-blur-sm border border-white/20">
-              Vaata lähemalt
-            </button>
-          </div>
-        </div>
-      </section>
+      {/* Logo / Pealkiri */}
+      <header className="text-center mb-12">
+        <h1 className="text-5xl font-extrabold text-black mb-2">
+          Tere Tulemast!
+        </h1>
+        <p className="text-lg text-gray-700">
+          Hetkel ehitame teie jaoks ägedat konseptsiooni
+        </p>
+      </header>
+
+      {/* SVG naljakas illustratsioon */}
+      <div className="mb-12">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-64 h-64 mx-auto"
+          viewBox="0 0 64 64"
+          fill="none"
+        >
+          <circle cx="32" cy="32" r="30" stroke="#000" strokeWidth="4"/>
+          <line x1="20" y1="24" x2="28" y2="24" stroke="#000" strokeWidth="3" strokeLinecap="round"/>
+          <line x1="36" y1="24" x2="44" y2="24" stroke="#000" strokeWidth="3" strokeLinecap="round"/>
+          <path d="M20 40 C 28 50, 36 50, 44 40" stroke="#000" strokeWidth="3" strokeLinecap="round"/>
+          <circle cx="24" cy="32" r="2" fill="#000"/>
+          <circle cx="40" cy="32" r="2" fill="#000"/>
+        </svg>
+        <p className="text-center text-gray-800 mt-4">
+          Naeratav robot ehitab teie ideed
+        </p>
+      </div>
+
+
+
+      {/* Footer */}
+      <footer className="mt-16 text-sm text-gray-500">
+        &copy; 2025 Vartsi teie ees Konseptsioon. Kõik õigused kaitstud.
+      </footer>
     </div>
   );
 }
