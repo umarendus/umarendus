@@ -22,5 +22,21 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* Ensure consistent styling across devices */
+* {
+  box-sizing: border-box;
+}
+
+/* Hero section specific styles */
+.hero-content h1 {
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hero-content p {
+  font-weight: 400;
+  line-height: 1.6;
 }
