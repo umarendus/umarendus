@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
+
 import { Monitor, Pencil, Cpu, Smartphone } from "lucide-react";
 
 const steps = [
@@ -58,7 +59,9 @@ export default function Home() {
   const [userInteracted, setUserInteracted] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // Check if screen is desktop size (lg breakpoint: 1024px)
   useEffect(() => {
@@ -92,6 +95,15 @@ export default function Home() {
       }
     };
   }, [userInteracted, isDesktop]);
+
+  // Handle video loading
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const handleCanPlay = () => setVideoLoading(false);
+    video.addEventListener("canplaythrough", handleCanPlay);
+    return () => video.removeEventListener("canplaythrough", handleCanPlay);
+  }, []);
 
   // Handle user click - pause auto-advance and resume after 10 seconds
   const handleStepClick = (stepId: number) => {
@@ -385,20 +397,28 @@ export default function Home() {
   id="kontakt"
   className="relative min-h-screen md:min-h-[900px] flex items-center justify-center p-6 overflow-hidden"
 >
-  {/* Taustavideo */}
+{/* Taustavideo */}
 <div className="absolute top-0 left-0 w-full h-full bg-[#272324] overflow-hidden z-0">
+  {videoLoading && (
+    <div className="absolute inset-0 flex items-center justify-center bg-[#272324] z-10">
+      <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  )}
   <video
+    ref={videoRef}
     autoPlay
     loop
     muted
     playsInline
-    className="w-full h-full object-cover"
+    preload="auto"
+    crossOrigin="anonymous"
+    className={`w-full h-full object-cover transition-opacity duration-500 ${
+      videoLoading ? "opacity-0" : "opacity-100"
+    }`}
   >
     <source src="/programm.mp4" type="video/mp4" />
-    {/* Kui video ei laadi, jääb taust värviks */}
   </video>
 </div>
-
  
   {/* Tausta SVG */}
   <div className="absolute top-0 left-0 right-0 hidden lg:flex justify-center pointer-events-none z-10">
