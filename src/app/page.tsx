@@ -164,7 +164,7 @@ export default function Home() {
 
 <section
   id="teenused"
-  className="w-full text-black relative flex items-stretch min-h-[900px]"
+  className="w-full text-black relative flex items-stretch min-h-[900px] overflow-hidden"
 >
   {/* Taustapilt – peidus väiksematel ekraanidel */}
   <div
@@ -174,9 +174,20 @@ export default function Home() {
     }}
   />
 
+  {/* Dekoratiivne SVG – mobiil vasakul, desktop paremal */}
+  <div className="absolute top-0 right-0 lg:right-0 pointer-events-none z-0">
+    <Image
+      src="/screen-settings.svg"
+      alt="Screen Settings"
+      width={100}
+      height={100}
+      className="w-[80px] h-auto lg:w-[100px] lg:h-auto"
+    />
+  </div>
+
   {/* Grid sisu */}
-  <div className="relative w-full max-w-7xl mx-auto px-6 md:grid md:grid-cols-12 gap-10 h-full">
-    {/* VASAK POOL – 8/12 ehk 2/3 */}
+  <div className="relative w-full max-w-7xl mx-auto px-6 md:grid md:grid-cols-12 gap-10 h-full z-10">
+    {/* VASAK POOL */}
     <div className="relative md:col-span-8 flex flex-col justify-center py-20 md:py-0 md:mt-20">
       <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-center">
         TEENUSED
@@ -189,63 +200,56 @@ export default function Home() {
         haldust, et sinu sait oleks alati ajakohane ja toimiv.
       </p>
 
-{/* Kaardid */}
-<div className="flex md:grid md:grid-cols-4 gap-6 md:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory touch-pan-x">
-  {services.map((s) => (
-    <div
-      key={s.title}
-      className="relative rounded-2xl overflow-hidden shadow-md group 
-                 flex-shrink-0 w-[50%] sm:w-[40%] md:w-auto aspect-[2/3] snap-start mx-2 md:mx-0"
-    >
-      <Image
-        src={s.img}
-        alt={s.title}
-        fill
-        className="object-cover transition-transform duration-300 group-hover:scale-105"
-      />
-      
-      {/* Fikseeritud width title jaoks */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 
-                      bg-black/80 text-white py-3 rounded-full 
-                      text-base font-bold text-center w-[calc(100%-16px)]">
-        {s.title}
+      {/* Kaardid */}
+      <div className="flex md:grid md:grid-cols-4 gap-6 md:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory touch-pan-x">
+        {services.map((s) => (
+          <div
+            key={s.title}
+            className="relative rounded-2xl overflow-hidden shadow-md group 
+                       flex-shrink-0 w-[50%] sm:w-[40%] md:w-auto aspect-[2/3] snap-start mx-2 md:mx-0"
+          >
+            <Image
+              src={s.img}
+              alt={s.title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+            
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 
+                            bg-black/80 text-white py-3 rounded-full 
+                            text-base font-bold text-center w-[calc(100%-16px)]">
+              {s.title}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-  ))}
-</div>
 
-
-
-  </div>
-
-    {/* PAREM POOL – 4/12 ehk 1/3 */}
+    {/* PAREM POOL */}
     <div className="relative md:col-span-4 flex flex-col justify-center py-10 md:py-0 text-lg pl-6 md:pl-10 md:mt-23">
       <p className="text-gray-700 mb-4">
         <strong>Meie eesmärk</strong> on teha <br />veebilahendus sinu jaoks lihtsalt kiirelt <br />ja odavalt.
       </p>
-   <p className="text-gray-700 mb-4 relative">
-  Olgu see <br />
-  uue veebilehe kavandamine, <br />
-  olemasoleva täiustamine<br />
-  või täisfunktsionaalse e-poe rajamine.
-  
-  {/* Border bottom */}
-  <span className="absolute -bottom-6 left-0 w-[30%] border-b-1 border-black"></span>
-</p>
+      <p className="text-gray-700 mb-4 relative">
+        Olgu see <br />
+        uue veebilehe kavandamine, <br />
+        olemasoleva täiustamine<br />
+        või täisfunktsionaalse e-poe rajamine.
+        <span className="absolute -bottom-6 left-0 w-[30%] border-b-1 border-black"></span>
+      </p>
       <p className="text-gray-700 mb-6">
         <br />
         Viime projekti lõpuni nii, et tulemus oleks kasutajasõbralik, kaasaegne ja sinu ärile kasulik.
       </p>
-<div className="flex justify-start">
-  <button className="px-5 py-2 mb-20 md:mb-0 rounded-full border border-black bg-black text-white font-bold 
-                     translate-y-8 hover:bg-gray-800 transform hover:translate-y-7
-                     transition-all duration-300 ease-in-out">
-    <Link href="#kontakt">
-      Kirjuta meile
-    </Link>
-  </button>
-</div>
-
+      <div className="flex justify-start">
+        <button className="px-5 py-2 mb-20 md:mb-0 rounded-full border border-black bg-black text-white font-bold 
+                           translate-y-8 hover:bg-gray-800 transform hover:translate-y-7
+                           transition-all duration-300 ease-in-out">
+          <Link href="#kontakt">
+            Kirjuta meile
+          </Link>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -254,71 +258,86 @@ export default function Home() {
 </section>
 
 
- <section id="protsess" className="w-full text-white relative min-h-[900px] flex items-stretch py-16 text-center bg-[#272324] lg:bg-transparent">
+
+ <section
+  id="protsess"
+  className="w-full text-white relative min-h-[900px] flex items-stretch py-16 text-center bg-[#272324] lg:bg-transparent overflow-hidden"
+>
   {/* Background image with overlay */}
   <div className="hidden lg:block absolute inset-0 max-w-[1920px] mx-auto">
     <div className="absolute inset-0 bg-black opacity-50"></div>
     <div className="absolute inset-0 bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url('/process-background.svg')` }} />
   </div>
 
+  {/* Dekoratiivne SVG */}
+  <div className="absolute top-0 right-0 lg:right-0 pointer-events-none z-0">
+    <Image
+      src="/screen-settings-w.svg"
+      alt="Screen Settings"
+      width={100}
+      height={100}
+      className="w-[80px] h-auto lg:w-[100px] lg:h-auto"
+    />
+  </div>
+
   {/* Desktop version */}
   <div className="hidden lg:block relative z-10 w-full">
-  <h2 className="text-3xl md:text-5xl font-bold md:mt-7 mb-20 text-center">PROTSESS</h2>
+    <h2 className="text-3xl md:text-5xl font-bold md:mt-7 mb-20 text-center">PROTSESS</h2>
 
-  {/* Icons row */}
-  <div className="flex justify-center gap-25 mb-12">
-    {steps.map((step) => (
-      <button
-        key={step.id}
-        onClick={() => handleStepClick(step.id)}
-        className="flex flex-col items-center space-y-2"
-      >
-        <div
-          className={`p-4 rounded-full transition-colors ${
-            active === step.id ? "text-white" : "text-gray-500"
-          }`}
+    {/* Icons row */}
+    <div className="flex justify-center gap-25 mb-12">
+      {steps.map((step) => (
+        <button
+          key={step.id}
+          onClick={() => handleStepClick(step.id)}
+          className="flex flex-col items-center space-y-2"
         >
-          <div className="relative">
-            {step.icon}
-            <span
-              className={`absolute -top-3 -right-3 text-sm font-bold ${
-                active === step.id ? "text-white" : "text-gray-500"
-              }`}
-            >
-              {step.id}
-            </span>
+          <div
+            className={`p-4 rounded-full transition-colors ${
+              active === step.id ? "text-white" : "text-gray-500"
+            }`}
+          >
+            <div className="relative">
+              {step.icon}
+              <span
+                className={`absolute -top-3 -right-3 text-sm font-bold ${
+                  active === step.id ? "text-white" : "text-gray-500"
+                }`}
+              >
+                {step.id}
+              </span>
+            </div>
           </div>
-        </div>
-      </button>
-    ))}
-  </div>
-
-  {/* Active content */}
-  {active >= 1 && active <= steps.length && (
-    <div className={`max-w-3xl mx-auto relative min-h-[200px] transition-opacity duration-600 ${
-      isTransitioning ? 'opacity-0' : 'opacity-100'
-    }`}>
-      <h3 className="text-3xl font-medium pb-2 mb-15 w-[80%] border-b mx-auto">
-        {steps[active - 1].title}
-      </h3>
-      <p className="text-xl text-gray-300 leading-relaxed mb-32">
-        {steps[active - 1].text}
-      </p>
+        </button>
+      ))}
     </div>
-  )}
 
-  {/* Dots indicator – nüüd kogu sectioni suhtes */}
-  <div className="absolute bottom-10 left-0 right-0 flex justify-center space-x-2">
-    {steps.map((_, index) => (
-      <div
-        key={index}
-        className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-          active === index + 1 ? "bg-white" : "bg-gray-500"
-        }`}
-      ></div>
-    ))}
+    {/* Active content */}
+    {active >= 1 && active <= steps.length && (
+      <div className={`max-w-3xl mx-auto relative min-h-[200px] transition-opacity duration-600 ${
+        isTransitioning ? 'opacity-0' : 'opacity-100'
+      }`}>
+        <h3 className="text-3xl font-medium pb-2 mb-15 w-[80%] border-b mx-auto">
+          {steps[active - 1].title}
+        </h3>
+        <p className="text-xl text-gray-300 leading-relaxed mb-32">
+          {steps[active - 1].text}
+        </p>
+      </div>
+    )}
+
+    {/* Dots indicator */}
+    <div className="absolute bottom-10 left-0 right-0 flex justify-center space-x-2">
+      {steps.map((_, index) => (
+        <div
+          key={index}
+          className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+            active === index + 1 ? "bg-white" : "bg-gray-500"
+          }`}
+        ></div>
+      ))}
+    </div>
   </div>
-</div>
 
   {/* Mobile version - accordion style */}
   <div className="lg:hidden relative z-10 w-full px-4">
@@ -343,12 +362,13 @@ export default function Home() {
         </div>
       ))}
   </div>
-    </section>
+</section>
+
 
       
 <section
   id="hinnapoliitika"
-  className="w-full text-black relative flex items-stretch md:min-h-[900px] py-19"
+  className="w-full text-black relative flex items-stretch md:min-h-[900px] py-19 overflow-hidden"
 >
   {/* Taustapilt – peidus väiksematel ekraanidel */}
   <div className="hidden lg:block absolute inset-0 max-w-[1920px] mx-auto">
@@ -359,13 +379,23 @@ export default function Home() {
     />
   </div>
 
+  {/* Paremas ülanurgas SVG */}
+<div className="absolute top-0 right-0 lg:top-0 lg:right-0 pointer-events-none z-0">
+  <Image
+    src="/screen-settings.svg"
+    alt="Screen Settings"
+    width={100}   // väike suurus
+    height={100}
+    className="w-[80px] h-auto lg:w-[100px] lg:h-auto"
+  />
+</div>
+
   <div className="max-w-3xl mx-auto px-0 relative z-10 space-y-8">
     <h2 className="text-3xl md:text-5xl font-bold md:mb-32 text-center">
       HINNAPOLIITIKA
     </h2>
 
     <div className="md:space-y-6 space-y-8 px-10 md:px-0 text-gray-800 text-left leading-relaxed text-xl">
-      
       <p>
         <span className="font-bold">HINNA</span><br />
         arvutame sinu vajaduste ja disainisoovide põhjal – nende kaardistamisel
@@ -393,33 +423,45 @@ export default function Home() {
   </div>
 </section>
 
+
 <section
   id="kontakt"
   className="relative min-h-screen md:min-h-[900px] flex items-center justify-center p-6 overflow-hidden"
 >
-{/* Taustavideo */}
-<div className="absolute top-0 left-0 w-full h-full bg-[#272324] overflow-hidden z-0">
-  {videoLoading && (
-    <div className="absolute inset-0 flex items-center justify-center bg-[#272324] z-10">
-      <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-    </div>
-  )}
-  <video
-    ref={videoRef}
-    autoPlay
-    loop
-    muted
-    playsInline
-    preload="auto"
-    crossOrigin="anonymous"
-    className={`w-full h-full object-cover transition-opacity duration-500 ${
-      videoLoading ? "opacity-0" : "opacity-100"
-    }`}
-  >
-    <source src="/programm.mp4" type="video/mp4" />
-  </video>
-</div>
- 
+  {/* Taustavideo */}
+  <div className="absolute top-0 left-0 w-full h-full bg-[#272324] overflow-hidden z-0">
+    {videoLoading && (
+      <div className="absolute inset-0 flex items-center justify-center bg-[#272324] z-10">
+        <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    )}
+    <video
+      ref={videoRef}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      crossOrigin="anonymous"
+      className={`w-full h-full object-cover transition-opacity duration-500 ${
+        videoLoading ? "opacity-0" : "opacity-100"
+      }`}
+    >
+      <source src="/programm.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  {/* Dekoratiivne SVG */}
+  <div className="absolute top-0 right-0 lg:right-0 pointer-events-none z-0">
+    <Image
+      src="/screen-settings-w.svg"
+      alt="Screen Settings"
+      width={100}
+      height={100}
+      className="w-[80px] h-auto lg:w-[100px] lg:h-auto"
+    />
+  </div>
+
   {/* Tausta SVG */}
   <div className="absolute top-0 left-0 right-0 hidden lg:flex justify-center pointer-events-none z-10">
     <Image
@@ -434,7 +476,7 @@ export default function Home() {
   {/* Sisu */}
   <div className="relative max-w-4xl w-full grid md:grid-cols-2 gap-12 items-start z-20">
     {/* Vasak pool */}
-    <div className="text-white">
+    <div className="text-white md:mt-20">
       <div className="grid grid-cols-2 gap-4 mb-2">
         <div>
           <h1 className="text-7xl font-extrabold leading-tight mb-6 md:mb-0 md:-translate-y-6">
@@ -474,7 +516,7 @@ export default function Home() {
     </div>
 
     {/* Parem pool (vorm brauseriakna stiilis) */}
-    <div className="bg-white rounded-lg shadow-md overflow-hidden z-20">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden  mb-40 md:mt-20 z-20">
       <div className="flex items-center px-6 py-3 border-b border-gray-300">
         <Image src="/home.svg" alt="Home" width={16} height={16} className="mr-2" />
         <span className="flex-1 text-center text-sm text-gray-600 border border-gray-400 rounded-full px-3 py-0.5 select-none">
@@ -520,7 +562,39 @@ export default function Home() {
       </form>
     </div>
   </div>
+
+  <div className="absolute bottom-0 left-0 w-full border-t border-white flex justify-start items-center mb-20 gap-6 py-5 px-10 md:px-20 z-30">
+    <a
+      href="https://facebook.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="hover:opacity-70 transition"
+    >
+      <Image
+        src="/facebook.svg"
+        alt="Facebook"
+        width={28}
+        height={28}
+        className="invert"
+      />
+    </a>
+    <a
+      href="https://linkedin.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="hover:opacity-70 transition"
+    >
+      <Image
+        src="/linkedin.svg"
+        alt="LinkedIn"
+        width={28}
+        height={28}
+        className="invert"
+      />
+    </a>
+  </div>
 </section>
+
 
       
 
