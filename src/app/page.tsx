@@ -1,47 +1,507 @@
-"use client";
+'use client'
 
+import Header from "../components/Header";
+import React from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { useState, useEffect, useRef } from "react";
 
-export default function LandingPageBW() {
+import { Monitor, Pencil, Cpu, Smartphone } from "lucide-react";
+
+const steps = [
+  {
+    id: 1,
+    icon: <Monitor size={60} />,
+    title: "Kaardistamine",
+    text: "Räägime koos läbi sinu ettevõtte eesmärgid ja ootused. Uurime, millised on sinu kliendid ja mida nad veebilehelt otsivad. Selle põhjal selgitame välja, millist veebilahendust sul tegelikult vaja on.",
+  },
+  {
+    id: 2,
+    icon: <Pencil size={60} />,
+    title: "Disain",
+    text: "Loome disainilahenduse, mis toetab sinu brändi ja kõnetab sihtrühma. Kujundus on kaasaegne, kasutajasõbralik ja mobiilisõbralik.",
+  },
+  {
+    id: 3,
+    icon: <Cpu size={60} />,
+    title: "AI-ga ehitus",
+    text: "Ehitusprotsessis kasutame kaasaegseid tööriistu ja AI lahendusi, et saavutada efektiivne, kiire ja kvaliteetne veebilehe arendus.",
+  },
+  {
+    id: 4,
+    icon: <Smartphone size={60} />,
+    title: "Testimine ja ülekandmine",
+    text: "Testime veebilehte erinevatel seadmetel ja brauseritel, et tagada laitmatu toimivus. Seejärel viime lahenduse live-keskkonda.",
+  },
+];
+
+export const services = [
+  {
+    title: "Disain",
+    img: "/canva/card-1.png", // asub public/canva/card-1.png
+  },
+  {
+    title: "Veebiarendus",
+    img: "/canva/card-2.png",
+  },
+  {
+    title: "Wordpress arendus",
+    img: "/canva/card-3.png",
+  },
+  {
+    title: "Kodulehe Haldus",
+    img: "/canva/card-4.png",
+  },
+];
+export default function Home() {
+  const [active, setActive] = useState(1);
+  const [userInteracted, setUserInteracted] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Check if screen is desktop size (lg breakpoint: 1024px)
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+    };
+  }, []);
+
+  // Auto-advance steps every 3 seconds on desktop only if no user interaction
+  useEffect(() => {
+    if (!userInteracted && isDesktop) {
+      timerRef.current = setInterval(() => {
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setActive(prev => (prev >= steps.length ? 1 : prev + 1));
+          setIsTransitioning(false);
+        }, 300); // Half of transition duration
+      }, 3000);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [userInteracted, isDesktop]);
+
+  // Handle user click - pause auto-advance and resume after 10 seconds
+  const handleStepClick = (stepId: number) => {
+    setActive(stepId);
+    setUserInteracted(true);
+    
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    // Resume auto-advance after 10 seconds of inactivity
+    setTimeout(() => {
+      setUserInteracted(false);
+    }, 10000);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
+    <div className="min-h-screen">
+      <Header />
       
-      {/* Logo / Pealkiri */}
-      <header className="text-center mb-12">
-        <h1 className="text-5xl font-extrabold text-black mb-2">
-          Tere Tulemast!
-        </h1>
-        <p className="text-lg text-gray-700">
-          Hetkel ehitame teie jaoks ägedat konseptsiooni
-        </p>
-      </header>
+      {/* Hero Section */}
+<section id="meist" className="relative h-screen flex items-center">
+  {/* Background Image */}
+  <div 
+    className="absolute inset-0 bg-cover bg-left bg-no-repeat"
+    style={{
+      backgroundImage: `url('/section1-bg.png')`
+    }}
+  />
 
-      {/* SVG naljakas illustratsioon */}
-      <div className="mb-12">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-64 h-64 mx-auto"
-          viewBox="0 0 64 64"
-          fill="none"
+  {/* Content Overlay */}
+  <div className="relative z-10 w-full px-6 pt-0">
+<div className="max-w-2xl hero-content text-left ml-0 lg:ml-12 -mt-50 md:-mt-80">
+  <h1 className="text-5xl md:text-6xl lg:text-7xl text-white mb-6 drop-shadow-lg text-left font-light">
+    Aitame väikeettevõtetel{" "}
+    <span className="block">
+      <span className="font-bold">nähtavaks</span> saada
+    </span>
+  </h1>
+
+  <p className="text-lg md:text-xl text-white/95 mb-10 max-w-lg drop-shadow-md text-left">
+    Loome AI-toega kaasaegseid veebilehti, 
+    mis aitavad sul jõuda klientideni soodsama hinnaga.
+  </p>
+
+  <div className="text-left">
+    <Link href="#teenused" scroll={true}>
+      <button className="bg-white/85 hover:bg-white text-gray-900 px-10 py-4 rounded-full font-semibold transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-xl">
+        Vaata lähemalt
+      </button>
+    </Link>
+  </div>
+</div>
+
+  </div>
+</section>
+
+
+<section
+  id="teenused"
+  className="w-full text-black relative flex items-stretch min-h-[900px]"
+>
+  {/* Taustapilt – peidus väiksematel ekraanidel */}
+  <div
+    className="hidden lg:block absolute inset-0 bg-center bg-no-repeat bg-cover max-w-[1920px] mx-auto"
+    style={{
+      backgroundImage: `url('/service-background.svg')`,
+    }}
+  />
+
+  {/* Grid sisu */}
+  <div className="relative w-full max-w-7xl mx-auto px-6 md:grid md:grid-cols-12 gap-10 h-full">
+    {/* VASAK POOL – 8/12 ehk 2/3 */}
+    <div className="relative md:col-span-8 flex flex-col justify-center py-20 md:py-0 md:mt-20">
+      <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-center">
+        TEENUSED
+      </h2>
+
+      <p className="text-gray-700 max-w-xl text-lg mb-10 mx-auto text-center">
+        Pakume terviklikke veebilahendusi, mis katavad kogu protsessi alates
+        disainist kuni lõpliku veebileheni. Loome kasutajasõbraliku ja kaasaegset UX/UI disaini,
+        arendame nii kohandatud veebilehti kui ka WordPressi lahendusi ning pakume veebilehe
+        haldust, et sinu sait oleks alati ajakohane ja toimiv.
+      </p>
+
+{/* Kaardid */}
+<div className="flex md:grid md:grid-cols-4 gap-6 md:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory touch-pan-x">
+  {services.map((s) => (
+    <div
+      key={s.title}
+      className="relative rounded-2xl overflow-hidden shadow-md group 
+                 flex-shrink-0 w-[50%] sm:w-[40%] md:w-auto aspect-[2/3] snap-start mx-2 md:mx-0"
+    >
+      <Image
+        src={s.img}
+        alt={s.title}
+        fill
+        className="object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+      
+      {/* Fikseeritud width title jaoks */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 
+                      bg-black/80 text-white py-3 rounded-full 
+                      text-base font-bold text-center w-[calc(100%-16px)]">
+        {s.title}
+      </div>
+    </div>
+  ))}
+</div>
+
+
+
+  </div>
+
+    {/* PAREM POOL – 4/12 ehk 1/3 */}
+    <div className="relative md:col-span-4 flex flex-col justify-center py-10 md:py-0 text-lg pl-6 md:pl-10 md:mt-23">
+      <p className="text-gray-700 mb-4">
+        <strong>Meie eesmärk</strong> on teha <br />veebilahendus sinu jaoks lihtsalt kiirelt <br />ja odavalt.
+      </p>
+   <p className="text-gray-700 mb-4 relative">
+  Olgu see <br />
+  uue veebilehe kavandamine, <br />
+  olemasoleva täiustamine<br />
+  või täisfunktsionaalse e-poe rajamine.
+  
+  {/* Border bottom */}
+  <span className="absolute -bottom-6 left-0 w-[30%] border-b-1 border-black"></span>
+</p>
+      <p className="text-gray-700 mb-6">
+        <br />
+        Viime projekti lõpuni nii, et tulemus oleks kasutajasõbralik, kaasaegne ja sinu ärile kasulik.
+      </p>
+<div className="flex justify-start">
+  <button className="px-5 py-2 mb-20 md:mb-0 rounded-full border border-black bg-black text-white font-bold 
+                     translate-y-8 hover:bg-gray-800 transform hover:translate-y-7
+                     transition-all duration-300 ease-in-out">
+    <Link href="#kontakt">
+      Kirjuta meile
+    </Link>
+  </button>
+</div>
+
+    </div>
+  </div>
+
+  {/* Alumine joon */}
+  <hr className="absolute left-0 w-full border-t bottom-[550px] md:bottom-[180px]" />
+</section>
+
+
+ <section id="protsess" className="w-full text-white relative min-h-[900px] flex items-stretch py-16 text-center bg-[#272324] lg:bg-transparent">
+  {/* Background image with overlay */}
+  <div className="hidden lg:block absolute inset-0 max-w-[1920px] mx-auto">
+    <div className="absolute inset-0 bg-black opacity-50"></div>
+    <div className="absolute inset-0 bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url('/process-background.svg')` }} />
+  </div>
+
+  {/* Desktop version */}
+  <div className="hidden lg:block relative z-10 w-full">
+  <h2 className="text-3xl md:text-5xl font-bold md:mt-7 mb-20 text-center">PROTSESS</h2>
+
+  {/* Icons row */}
+  <div className="flex justify-center gap-25 mb-12">
+    {steps.map((step) => (
+      <button
+        key={step.id}
+        onClick={() => handleStepClick(step.id)}
+        className="flex flex-col items-center space-y-2"
+      >
+        <div
+          className={`p-4 rounded-full transition-colors ${
+            active === step.id ? "text-white" : "text-gray-500"
+          }`}
         >
-          <circle cx="32" cy="32" r="30" stroke="#000" strokeWidth="4"/>
-          <line x1="20" y1="24" x2="28" y2="24" stroke="#000" strokeWidth="3" strokeLinecap="round"/>
-          <line x1="36" y1="24" x2="44" y2="24" stroke="#000" strokeWidth="3" strokeLinecap="round"/>
-          <path d="M20 40 C 28 50, 36 50, 44 40" stroke="#000" strokeWidth="3" strokeLinecap="round"/>
-          <circle cx="24" cy="32" r="2" fill="#000"/>
-          <circle cx="40" cy="32" r="2" fill="#000"/>
-        </svg>
-        <p className="text-center text-gray-800 mt-4">
-          Naeratav robot ehitab teie ideed
-        </p>
+          <div className="relative">
+            {step.icon}
+            <span
+              className={`absolute -top-3 -right-3 text-sm font-bold ${
+                active === step.id ? "text-white" : "text-gray-500"
+              }`}
+            >
+              {step.id}
+            </span>
+          </div>
+        </div>
+      </button>
+    ))}
+  </div>
+
+  {/* Active content */}
+  {active >= 1 && active <= steps.length && (
+    <div className={`max-w-3xl mx-auto relative min-h-[200px] transition-opacity duration-600 ${
+      isTransitioning ? 'opacity-0' : 'opacity-100'
+    }`}>
+      <h3 className="text-3xl font-medium pb-2 mb-15 w-[80%] border-b mx-auto">
+        {steps[active - 1].title}
+      </h3>
+      <p className="text-xl text-gray-300 leading-relaxed mb-32">
+        {steps[active - 1].text}
+      </p>
+    </div>
+  )}
+
+  {/* Dots indicator – nüüd kogu sectioni suhtes */}
+  <div className="absolute bottom-10 left-0 right-0 flex justify-center space-x-2">
+    {steps.map((_, index) => (
+      <div
+        key={index}
+        className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+          active === index + 1 ? "bg-white" : "bg-gray-500"
+        }`}
+      ></div>
+    ))}
+  </div>
+</div>
+
+  {/* Mobile version - accordion style */}
+  <div className="lg:hidden relative z-10 w-full px-4">
+      <h2 className="text-3xl font-bold mb-8">PROTSESS</h2>
+
+      {steps.map((step) => (
+        <div key={step.id}>
+          <button
+            onClick={() => setActive(active === step.id ? 0 : step.id)}
+            className="w-full text-left py-2 hover:bg-gray-700 transition-colors border-t border-white"
+          >
+            <div className="flex items-center gap-2">
+              <div className={active === step.id ? "text-white" : "text-gray-400"}>
+                {React.cloneElement(step.icon, { size: 32 })}
+              </div>
+              <h3 className="p-4 text-xl font-semibold">{step.id}. {step.title}</h3>
+            </div>
+          </button>
+          <div className={`transition-all duration-300 ease-in-out overflow-hidden ${active === step.id ? 'max-h-96' : 'max-h-0'}`}>
+            <p className="p-4 text-gray-300 leading-relaxed">{step.text}</p>
+          </div>
+        </div>
+      ))}
+  </div>
+    </section>
+
+      
+<section
+  id="hinnapoliitika"
+  className="w-full text-black relative flex items-stretch md:min-h-[900px] py-19"
+>
+  {/* Taustapilt – peidus väiksematel ekraanidel */}
+  <div className="hidden lg:block absolute inset-0 max-w-[1920px] mx-auto">
+    <div className="absolute inset-0  opacity-20"></div> {/* Overlay */}
+    <div
+      className="absolute inset-0 bg-center bg-no-repeat bg-cover"
+      style={{ backgroundImage: `url('/price-background.svg')` }}
+    />
+  </div>
+
+  <div className="max-w-3xl mx-auto px-0 relative z-10 space-y-8">
+    <h2 className="text-3xl md:text-5xl font-bold md:mb-32 text-center">
+      HINNAPOLIITIKA
+    </h2>
+
+    <div className="md:space-y-6 space-y-8 px-10 md:px-0 text-gray-800 text-left leading-relaxed text-xl">
+      
+      <p>
+        <span className="font-bold">HINNA</span><br />
+        arvutame sinu vajaduste ja disainisoovide põhjal – nende kaardistamisel
+        selgub töömaht, mille järgi saame pakkuda sobiva lahenduse.
+      </p>
+
+      <p>
+         <span className="font-bold">OLENEVALT EESMÄRGIST</span><br />
+        võib see olla lihtne veebileht, mis jagab infot ja kuhu kliente suunata,
+        või põhjalikum lahendus, mis aitab sul otsingutes silma paista.
+      </p>
+
+      <p>
+        <span className="font-bold">HALDUSTEENUSE</span><br />
+        puhul lepime kokku igakuise tasu, mis tagab, <br />
+        et veebileht püsib alati ajakohane ja töökindel.
+      </p>
+
+      <p>
+        Kokkuvõttes on see investeering sinu ettevõtte nähtavusse ja
+        usaldusväärsusse – veebinähtavus on tänapäeval hädavajalik, et{" "}
+        <span className="font-bold">konkurentidega sammu pidada.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section
+  id="kontakt"
+  className="relative min-h-screen md:min-h-[900px] flex items-center justify-center p-6 overflow-hidden"
+>
+  {/* Taustavideo */}
+  <video
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="absolute top-0 left-0 w-full h-full object-cover z-0"
+  >
+    <source src="/programm.mp4" type="video/mp4" />
+    Sinu brauser ei toeta videot.
+  </video>
+
+  {/* Tausta SVG */}
+  <div className="absolute top-0 left-0 right-0 hidden lg:flex justify-center pointer-events-none z-10">
+    <Image
+      src="/contact-bg.svg"
+      alt="Background"
+      width={1000}
+      height={1080}
+      className="min-w-[1920px]"
+    />
+  </div>
+
+  {/* Sisu */}
+  <div className="relative max-w-4xl w-full grid md:grid-cols-2 gap-12 items-start z-20">
+    {/* Vasak pool */}
+    <div className="text-white">
+      <div className="grid grid-cols-2 gap-4 mb-2">
+        <div>
+          <h1 className="text-7xl font-extrabold leading-tight mb-6 md:mb-0 md:-translate-y-6">
+            KIRJUTA <br /> MEILE
+          </h1>
+          <p className="mb-4 font-bold">
+            Võta ühendust <br />
+            kasvõi meili kaudu:
+          </p>
+          <a
+            href="mailto:info@umarendus.ee"
+            className="inline-block bg-gray-200 text-black px-6 py-2 mb-2 rounded-full font-semibold hover:bg-gray-300 transition"
+          >
+            info@umarendus.ee
+          </a>
+        </div>
+        <div className="flex items-center justify-center">
+          <Image
+            src="/logo-lower.svg"
+            alt="Logo"
+            width={160}
+            height={160}
+            className="w-full h-auto max-w-[160px]"
+          />
+        </div>
       </div>
 
+      <div>
+        <p className="mt-4 mb-2 font-bold">
+          Kas sul on veebileht, mis ei too kliente, või pole lehte üldse?
+        </p>
+        <p className="border-t pt-2 border-gray-300 w-[70%]">
+          Ära muretse, meie loome AI-toega kaasaegseid veebilehti, mis aitavad
+          sul jõuda klientideni soodsama hinnaga.
+        </p>
+      </div>
+    </div>
+
+    {/* Parem pool (vorm brauseriakna stiilis) */}
+    <div className="bg-white rounded-lg shadow-md overflow-hidden z-20">
+      <div className="flex items-center px-6 py-3 border-b border-gray-300">
+        <Image src="/home.svg" alt="Home" width={16} height={16} className="mr-2" />
+        <span className="flex-1 text-center text-sm text-gray-600 border border-gray-400 rounded-full px-3 py-0.5 select-none">
+          www.sinuleht.ee
+        </span>
+      </div>
+
+      <form className="p-8 space-y-4">
+        <div>
+          <input
+            type="text"
+            placeholder="*Teie nimi"
+            className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="*Teie number"
+            className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
+          />
+        </div>
+        <div>
+          <input
+            type="email"
+            placeholder="*Teie e-mail"
+            className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
+          />
+        </div>
+        <div>
+          <textarea
+            placeholder="*Kirjeldage oma projekti"
+            className="w-full border border-black rounded-md p-2 text-black h-28 resize-none placeholder-gray-500 text-sm"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition"
+        >
+          Kirjuta meile
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+      
 
 
-      {/* Footer */}
-      <footer className="mt-16 text-sm text-gray-500">
-        &copy; 2025 Vartsi teie ees Konseptsioon. Kõik õigused kaitstud.
-      </footer>
     </div>
   );
 }
