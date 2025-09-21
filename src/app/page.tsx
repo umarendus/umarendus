@@ -386,17 +386,20 @@ export default function Home() {
   className="relative min-h-screen md:min-h-[900px] flex items-center justify-center p-6 overflow-hidden"
 >
   {/* Taustavideo */}
+<div className="absolute top-0 left-0 w-full h-full bg-[#272324] overflow-hidden z-0">
   <video
     autoPlay
     loop
     muted
     playsInline
-    className="absolute top-0 left-0 w-full h-full object-cover z-0"
+    className="w-full h-full object-cover"
   >
     <source src="/programm.mp4" type="video/mp4" />
-    Sinu brauser ei toeta videot.
+    {/* Kui video ei laadi, jääb taust värviks */}
   </video>
+</div>
 
+ 
   {/* Tausta SVG */}
   <div className="absolute top-0 left-0 right-0 hidden lg:flex justify-center pointer-events-none z-10">
     <Image
