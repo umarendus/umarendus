@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-
+import emailjs from "@emailjs/browser";
 
 
 
@@ -157,6 +157,7 @@ useEffect(() => {
   window.addEventListener("resize", checkHeight);
   return () => window.removeEventListener("resize", checkHeight);
 }, []);
+
 const [formData, setFormData] = useState({
     nimi: "",
     number: "",
@@ -168,37 +169,33 @@ const [formData, setFormData] = useState({
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setSuccess(false);
     setError(false);
 
-    try {
-      const res = await fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
-        setSuccess(true);
-        setFormData({ nimi: "", number: "", email: "", projekt: "" }); // puhasta vorm
-      } else {
-        setError(true);
-      }
-    } catch (err) {
-      console.error(err);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+emailjs.send(
+  process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+  process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+  formData,
+  process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+)
+      .then(
+        () => {
+          setLoading(false);
+          setSuccess(true);
+          setFormData({ nimi: "", number: "", email: "", projekt: "" }); // puhasta vorm
+        },
+        () => {
+          setLoading(false);
+          setError(true);
+        }
+      );
   };
 
   return (
