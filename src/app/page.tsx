@@ -42,7 +42,7 @@ const steps = [
 export const services = [
   {
     title: "Disain",
-    img: "/canva/card-1.png", // asub public/canva/card-1.png
+    img: "/canva/card-1.png", 
   },
   {
     title: "Veebiarendus",
@@ -295,6 +295,7 @@ emailjs.send(
               src={s.img}
               alt={s.title}
               fill
+              sizes="(max-width: 640px) 50vw, (max-width: 768px) 40vw, 25vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
             
