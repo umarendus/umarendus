@@ -691,7 +691,7 @@ emailjs.send(
 
   <div className="absolute bottom-0 left-0 w-full border-t border-white flex justify-start items-center mb-20 gap-6 py-5 px-10 md:px-20 z-30">
     <a
-      href="https://facebook.com"
+      href="https://www.facebook.com/umarendus"
       target="_blank"
       rel="noopener noreferrer"
       className="hover:opacity-70 transition"
@@ -705,7 +705,7 @@ emailjs.send(
       />
     </a>
     <a
-      href="https://linkedin.com"
+      href="http://linkedin.com/company/umarendus"
       target="_blank"
       rel="noopener noreferrer"
       className="hover:opacity-70 transition"
