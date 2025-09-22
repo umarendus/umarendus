@@ -194,11 +194,11 @@ export default function Header() {
 
                 {/* Socials */}
                 <div className="flex justify-center gap-6 mt-4">
-                  <motion.a href="https://facebook.com" target="_blank" rel="noopener noreferrer" variants={itemVariants}>
-                    <Image src="/facebook.svg" alt="Facebook" width={28} height={28} />
+                  <motion.a href="https://www.facebook.com/umarendus" target="_blank" rel="noopener noreferrer" variants={itemVariants}>
+                    <Image src="/facebook.svg" alt="Facebook" width={30} height={30} />
                   </motion.a>
-                  <motion.a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" variants={itemVariants}>
-                    <Image src="/linkedin.svg" alt="LinkedIn" width={28} height={28} />
+                  <motion.a href="http://linkedin.com/company/umarendus" target="_blank" rel="noopener noreferrer" variants={itemVariants}>
+                    <Image src="/linkedin.svg" alt="LinkedIn" width={30} height={30} />
                   </motion.a>
                 </div>
               </motion.div>
