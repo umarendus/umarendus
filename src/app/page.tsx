@@ -55,13 +55,24 @@ export const services = [
   },
 ];
 export default function Home() {
+  const [videoLoading, setVideoLoading] = useState(true);
+const videoRef = useRef<HTMLVideoElement>(null);
+
+useEffect(() => {
+  const video = videoRef.current;
+  if (!video) return;
+
+  const handleCanPlay = () => setVideoLoading(false);
+  video.addEventListener("canplay", handleCanPlay);
+  return () => video.removeEventListener("canplay", handleCanPlay);
+}, []);
+
   const [active, setActive] = useState(1);
   const [userInteracted, setUserInteracted] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [videoLoading, setVideoLoading] = useState(true);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+
 
   // Check if screen is desktop size (lg breakpoint: 1024px)
   useEffect(() => {
@@ -96,14 +107,8 @@ export default function Home() {
     };
   }, [userInteracted, isDesktop]);
 
-  // Handle video loading
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    const handleCanPlay = () => setVideoLoading(false);
-    video.addEventListener("canplaythrough", handleCanPlay);
-    return () => video.removeEventListener("canplaythrough", handleCanPlay);
-  }, []);
+
+
 
   // Handle user click - pause auto-advance and resume after 10 seconds
   const handleStepClick = (stepId: number) => {
@@ -119,6 +124,15 @@ export default function Home() {
       setUserInteracted(false);
     }, 10000);
   };
+
+  const [isShortScreen, setIsShortScreen] = useState(false);
+
+useEffect(() => {
+  const checkHeight = () => setIsShortScreen(window.innerHeight < 760);
+  checkHeight();
+  window.addEventListener("resize", checkHeight);
+  return () => window.removeEventListener("resize", checkHeight);
+}, []);
 
   return (
     <div className="min-h-screen">
@@ -136,7 +150,11 @@ export default function Home() {
 
   {/* Content Overlay */}
   <div className="relative z-10 w-full px-6 pt-0">
-<div className="max-w-2xl hero-content text-left ml-0 lg:ml-12 -mt-30 md:-mt-80">
+<div
+  className={`max-w-2xl hero-content text-left ml-0 lg:ml-12 ${
+    isShortScreen ? "-mt-30" : "-mt-30 md:-mt-80"
+  }`}
+>
   <h1 className="text-5xl md:text-6xl lg:text-7xl text-white mb-6 drop-shadow-lg text-left font-light">
     Aitame väikeettevõtetel{" "}
     <span className="block">
@@ -428,28 +446,38 @@ export default function Home() {
   id="kontakt"
   className="relative min-h-screen md:min-h-[900px] flex items-center justify-center p-6 overflow-hidden"
 >
-  {/* Taustavideo */}
-  <div className="absolute top-0 left-0 w-full h-full bg-[#272324] overflow-hidden z-0">
-    {videoLoading && (
-      <div className="absolute inset-0 flex items-center justify-center bg-[#272324] z-10">
-        <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    )}
-    <video
-      ref={videoRef}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      crossOrigin="anonymous"
-      className={`w-full h-full object-cover transition-opacity duration-500 ${
-        videoLoading ? "opacity-0" : "opacity-100"
-      }`}
-    >
-      <source src="/programm.mp4" type="video/mp4" />
-    </video>
-  </div>
+{/* Taustavideo */}
+<div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+  {/* Fallback pilt - alati all */}
+  <img
+    src="/video-background-pic.png"
+    alt="Background preview"
+    className="absolute inset-0 w-full h-full object-cover"
+  />
+
+  {/* Video üleval pildist */}
+  <video
+    ref={videoRef}
+    autoPlay
+    loop
+    muted
+    playsInline
+    preload="auto"
+    crossOrigin="anonymous"
+    poster="/video-background-pic.png"
+    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+      videoLoading ? "opacity-0" : "opacity-100"
+    }`}
+    onCanPlay={() => setVideoLoading(false)}
+  >
+    <source src="/bg-video.webm" type="video/webm" />
+    <source src="/bg-video.mp4" type="video/mp4" />
+  </video>
+</div>
+
+
+
+
 
   {/* Dekoratiivne SVG */}
   <div className="absolute top-0 right-0 lg:right-0 pointer-events-none z-0">
@@ -493,7 +521,7 @@ export default function Home() {
             info@umarendus.ee
           </a>
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center md:translate-y-0 translate-y-3">
           <Image
             src="/logo-lower.svg"
             alt="Logo"
