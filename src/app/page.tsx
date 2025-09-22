@@ -136,7 +136,7 @@ export default function Home() {
 
   {/* Content Overlay */}
   <div className="relative z-10 w-full px-6 pt-0">
-<div className="max-w-2xl hero-content text-left ml-0 lg:ml-12 -mt-50 md:-mt-80">
+<div className="max-w-2xl hero-content text-left ml-0 lg:ml-12 -mt-30 md:-mt-80">
   <h1 className="text-5xl md:text-6xl lg:text-7xl text-white mb-6 drop-shadow-lg text-left font-light">
     Aitame väikeettevõtetel{" "}
     <span className="block">
@@ -254,7 +254,7 @@ export default function Home() {
   </div>
 
   {/* Alumine joon */}
-  <hr className="absolute left-0 w-full border-t bottom-[550px] md:bottom-[180px]" />
+  <hr className="absolute left-0 w-full border-t bottom-[570px] md:bottom-[180px]" />
 </section>
 
 
