@@ -49,6 +49,19 @@ export default function Header() {
     return () => observers.forEach((observer) => observer.disconnect());
   }, []);
 
+  // Close mobile menu when screen resizes to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      // lg breakpoint is 1024px in Tailwind
+      if (window.innerWidth >= 1024 && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [mobileMenuOpen]);
+
   // Framer Motion variants
   const menuVariants = {
     hidden: { opacity: 0 },
