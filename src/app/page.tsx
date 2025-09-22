@@ -278,7 +278,7 @@ emailjs.send(
 
       <p className="text-gray-700 max-w-xl text-lg mb-10 mx-auto text-center">
         Pakume terviklikke veebilahendusi, mis katavad kogu protsessi alates
-        disainist kuni lõpliku veebileheni. Loome kasutajasõbraliku ja kaasaegset UX/UI disaini,
+        disainist kuni lõpliku veebileheni. Loome kasutajasõbraliku ja kaasaegse UX/UI disaini,
         arendame nii kohandatud veebilehti kui ka WordPressi lahendusi ning pakume veebilehe
         haldust, et sinu sait oleks alati ajakohane ja toimiv.
       </p>
