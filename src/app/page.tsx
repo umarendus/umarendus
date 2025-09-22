@@ -42,19 +42,19 @@ const steps = [
 export const services = [
   {
     title: "Disain",
-    img: "/canva/card-1.png", 
+    img: "/canva/card-1.webp", 
   },
   {
     title: "Veebiarendus",
-    img: "/canva/card-2.png",
+    img: "/canva/card-2.webp",
   },
   {
     title: "Wordpress arendus",
-    img: "/canva/card-3.png",
+    img: "/canva/card-3.webp",
   },
   {
     title: "Kodulehe Haldus",
-    img: "/canva/card-4.png",
+    img: "/canva/card-4.webp",
   },
 ];
 export default function Home() {
@@ -209,7 +209,7 @@ emailjs.send(
   <div 
     className="absolute inset-0 bg-cover bg-left bg-no-repeat"
     style={{
-      backgroundImage: `url('/section1-bg.png')`
+      backgroundImage: `url('/section1-bg.webp')`
     }}
   />
 
