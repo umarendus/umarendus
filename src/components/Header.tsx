@@ -12,7 +12,18 @@ export default function Header() {
   const [active, setActive] = useState("");
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  // Custom scroll handler (smooth + offset)
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+
+    const headerOffset = 68; // header height
+    const elementPosition = section.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  };
 
   // IntersectionObserver for active section
   useEffect(() => {
@@ -38,13 +49,14 @@ export default function Header() {
     return () => observers.forEach((observer) => observer.disconnect());
   }, []);
 
-  // Framer Motion variants for staggered animation
+  // Framer Motion variants
   const menuVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: { staggerChildren: 0.08, delayChildren: 0.1 },
     },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   const itemVariants = {
@@ -52,21 +64,37 @@ export default function Header() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
+  // Wait for exit animation before scrolling
+  const handleMobileClick = (id: string) => {
+    setMobileMenuOpen(false);
+    setTimeout(() => scrollToSection(id), 300); // sama kestus kui motion.div exit
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/70 backdrop-blur-md px-6 py-2 border-b border-white/20">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/70 backdrop-blur-md px-6 py-0 border-b border-white/20">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-          <Image src="/logo.svg" alt="Logo" width={80} height={80} />
-        </Link>
+                <Link
+  href="/"
+  className="relative flex items-center h-full hover:opacity-80 transition-opacity"
+>
+  <Image
+    src="/logo.svg"
+    alt="Logo"
+    width={0}
+    height={0}
+    sizes="100vh"
+    className="h-full w-auto object-contain"
+  />
+</Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-10">
           {sections.map((id) =>
             id !== "kontakt" ? (
-              <Link
+              <button
                 key={id}
-                href={`#${id}`}
+                onClick={() => scrollToSection(id)}
                 className={`relative font-medium text-sm tracking-wide transition-colors duration-300 ${
                   active === id
                     ? "text-gray-900 font-semibold"
@@ -79,14 +107,14 @@ export default function Header() {
                 {active === id && (
                   <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gray-900 transition-all duration-300" />
                 )}
-              </Link>
+              </button>
             ) : null
           )}
         </nav>
 
-        {/* CTA Button = Kirjuta Meile */}
-        <Link
-          href="#kontakt"
+        {/* CTA Button */}
+        <button
+          onClick={() => scrollToSection("kontakt")}
           className={`hidden lg:block transition-transform duration-300 ${
             active === "kontakt" ? "scale-110 text-gray-900" : "hover:scale-110 text-gray-800"
           }`}
@@ -98,7 +126,7 @@ export default function Header() {
             height={50}
             className="h-9 w-auto"
           />
-        </Link>
+        </button>
 
         {/* Mobile menu button */}
         <button
@@ -121,58 +149,48 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile Menu with overlay and staggered items */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="fixed top-16 left-0 py-15 right-0 z-50 bg-white/98"
+            className="fixed top-17 left-0 right-0  z-50 bg-white/98"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            {/* Overlay */}
-            <div className="absolute inset-0" onClick={closeMobileMenu} />
-
-            {/* Menu content */}
-            <motion.div
-              
-              variants={menuVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-            >
-              <nav className="space-y-6 text-center mb-6">
-                {sections.filter((id) => id !== "kontakt").map((id) => (
-                  <motion.div key={id} variants={itemVariants}>
-                    <Link
-                      href={`#${id}`}
-                      onClick={closeMobileMenu}
-                      className="block text-black text-2xl font-semibold tracking-wide hover:text-gray-700 transition-colors"
-                    >
-                      {id.toUpperCase()}
-                    </Link>
-                  </motion.div>
-                ))}
-              </nav>
+    <motion.div
+  variants={menuVariants}
+  initial="hidden"
+  animate="visible"
+  exit="exit"
+  className="flex flex-col items-center space-y-6 py-10 text-center"
+>
+              {sections.filter((id) => id !== "kontakt").map((id) => (
+                <motion.div key={id} variants={itemVariants}>
+                  <button
+                    onClick={() => handleMobileClick(id)}
+                    className="block text-black text-2xl font-semibold  tracking-wide hover:text-gray-700 transition-colors"
+                  >
+                    {id.toUpperCase()}
+                  </button>
+                </motion.div>
+              ))}
 
               {/* CTA */}
               <motion.div variants={itemVariants}>
-<Link
-  href="#kontakt"
-  onClick={closeMobileMenu}
-  className="flex justify-center mb-6 hover:opacity-80 transition-opacity"
->
-  <Image
-    src="/sinu-leht.svg"
-    alt="Kirjuta Meile"
-    width={100}
-    height={50}
-    className="h-14 w-auto"
-  />
-</Link>
-
-
+                <button
+                  onClick={() => handleMobileClick("kontakt")}
+                  className="flex justify-center mb-6 hover:opacity-80 transition-opacity"
+                >
+                  <Image
+                    src="/sinu-leht.svg"
+                    alt="Kirjuta Meile"
+                    width={100}
+                    height={50}
+                    className="h-14 w-auto "
+                  />
+                </button>
 
                 {/* Socials */}
                 <div className="flex justify-center gap-6 mt-4">

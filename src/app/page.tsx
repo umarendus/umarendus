@@ -3,8 +3,11 @@
 import Header from "../components/Header";
 import React from "react";
 import Link from "next/link";
+
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import emailjs from "@emailjs/browser";
+
 
 
 import { Monitor, Pencil, Cpu, Smartphone } from "lucide-react";
@@ -55,17 +58,38 @@ export const services = [
   },
 ];
 export default function Home() {
-  const [videoLoading, setVideoLoading] = useState(true);
+
 const videoRef = useRef<HTMLVideoElement>(null);
 
 useEffect(() => {
   const video = videoRef.current;
   if (!video) return;
 
-  const handleCanPlay = () => setVideoLoading(false);
-  video.addEventListener("canplay", handleCanPlay);
-  return () => video.removeEventListener("canplay", handleCanPlay);
+  // Käivitub niipea kui esimesed kaadrid on saadaval
+  const handleLoadedData = () => {
+
+    video.play();
+  };
+
+  video.addEventListener("loadeddata", handleLoadedData);
+
+  // Ensure video plays when it comes into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        video.play();
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(video);
+
+  return () => {
+    video.removeEventListener("loadeddata", handleLoadedData);
+    observer.unobserve(video);
+  };
 }, []);
+
 
   const [active, setActive] = useState(1);
   const [userInteracted, setUserInteracted] = useState(false);
@@ -134,7 +158,48 @@ useEffect(() => {
   return () => window.removeEventListener("resize", checkHeight);
 }, []);
 
+const [formData, setFormData] = useState({
+    nimi: "",
+    number: "",
+    email: "",
+    projekt: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess(false);
+    setError(false);
+
+emailjs.send(
+  process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+  process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+  formData,
+  process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+)
+      .then(
+        () => {
+          setLoading(false);
+          setSuccess(true);
+          setFormData({ nimi: "", number: "", email: "", projekt: "" }); // puhasta vorm
+        },
+        () => {
+          setLoading(false);
+          setError(true);
+        }
+      );
+  };
+
   return (
+    
     <div className="min-h-screen">
       <Header />
       
@@ -447,33 +512,33 @@ useEffect(() => {
   className="relative min-h-screen md:min-h-[900px] flex items-center justify-center p-6 overflow-hidden"
 >
 {/* Taustavideo */}
+
 <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-  {/* Fallback pilt - alati all */}
-  <img
-    src="/video-background-pic.png"
+  {/* Background image */}
+  <Image
+    src="/see/video-background-pic.jpg"
     alt="Background preview"
-    className="absolute inset-0 w-full h-full object-cover"
+    fill
+    className="object-cover"
   />
 
-  {/* Video üleval pildist */}
+  {/* Video */}
   <video
     ref={videoRef}
-    autoPlay
+    src="/see/bg-video-dark.mp4"
     loop
     muted
     playsInline
     preload="auto"
-    crossOrigin="anonymous"
-    poster="/video-background-pic.png"
-    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-      videoLoading ? "opacity-0" : "opacity-100"
-    }`}
-    onCanPlay={() => setVideoLoading(false)}
-  >
-    <source src="/bg-video.webm" type="video/webm" />
-    <source src="/bg-video.mp4" type="video/mp4" />
-  </video>
+    poster="/see/video-background-pic.jpg"
+ 
+    className="absolute inset-0 w-full h-full object-cover"
+  ></video>
+
+  {/* Blur + helepruun overlay */}
+  <div className="absolute inset-0 backdrop-blur-sm bg-[#fafafa]/10 pointer-events-none"></div>
 </div>
+
 
 
 
@@ -515,10 +580,10 @@ useEffect(() => {
             kasvõi meili kaudu:
           </p>
           <a
-            href="mailto:info@umarendus.ee"
+            href="mailto:umarendus@gmail.com"
             className="inline-block bg-gray-200 text-black px-6 py-2 mb-2 rounded-full font-semibold hover:bg-gray-300 transition"
           >
-            info@umarendus.ee
+            umarendus@gmail.com
           </a>
         </div>
         <div className="flex items-center justify-center md:translate-y-0 translate-y-3">
@@ -544,50 +609,82 @@ useEffect(() => {
     </div>
 
     {/* Parem pool (vorm brauseriakna stiilis) */}
-    <div className="bg-white rounded-lg shadow-md overflow-hidden  mb-40 md:mt-20 z-20">
-      <div className="flex items-center px-6 py-3 border-b border-gray-300">
+    <div className="bg-white/95 rounded-lg shadow-md overflow-hidden  mb-40 md:mt-20 z-20">
+      <div className="flex items-center px-6 py-4 border-b border-gray-600">
         <Image src="/home.svg" alt="Home" width={16} height={16} className="mr-2" />
-        <span className="flex-1 text-center text-sm text-gray-600 border border-gray-400 rounded-full px-3 py-0.5 select-none">
+        <span className="flex-1 text-center text-sm text-gray-600 border border-gray-700 rounded-full px-3 py-0.5 select-none">
           www.sinuleht.ee
         </span>
       </div>
 
-      <form className="p-8 space-y-4">
-        <div>
-          <input
-            type="text"
-            placeholder="*Teie nimi"
-            className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="*Teie number"
-            className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
-          />
-        </div>
-        <div>
-          <input
-            type="email"
-            placeholder="*Teie e-mail"
-            className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
-          />
-        </div>
-        <div>
-          <textarea
-            placeholder="*Kirjeldage oma projekti"
-            className="w-full border border-black rounded-md p-2 text-black h-28 resize-none placeholder-gray-500 text-sm"
-          ></textarea>
-        </div>
+<form onSubmit={handleSubmit} className="p-8 space-y-4 max-w-lg mx-auto">
+      <div>
+        <input
+          type="text"
+          name="nimi"
+          placeholder="*Teie nimi"
+          value={formData.nimi}
+          onChange={handleChange}
+          required
+          className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
+        />
+      </div>
 
-        <button
-          type="submit"
-          className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition"
-        >
-          Kirjuta meile
-        </button>
-      </form>
+      <div>
+        <input
+          type="text"
+          name="number"
+          placeholder="*Teie number"
+          value={formData.number}
+          onChange={handleChange}
+          required
+          className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
+        />
+      </div>
+
+      <div>
+        <input
+          type="email"
+          name="email"
+          placeholder="*Teie e-mail"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full border-b border-black outline-none py-2 text-black placeholder-gray-500 text-sm"
+        />
+      </div>
+
+      <div>
+        <textarea
+          name="projekt"
+          placeholder="*Kirjeldage oma projekti"
+          value={formData.projekt}
+          onChange={handleChange}
+          required
+          className="w-full border border-black rounded-md p-2 text-black h-28 resize-none placeholder-gray-500 text-sm"
+        />
+      </div>
+<div className="flex flex-col items-center space-y-2">
+  <button
+    type="submit"
+    disabled={loading}
+    className="bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition cursor-pointer disabled:opacity-50"
+  >
+    {loading ? "Saadan..." : "Kirjuta meile"}
+  </button>
+
+  {success && (
+    <p className="text-gray-800 font-bold text-sm text-center">
+      Sõnum saadetud! Võtame peagi ühendust.
+    </p>
+  )}
+  {error && (
+    <p className="text-red-600 font-bold text-sm text-center">
+      Midagi läks valesti.
+    </p>
+  )}
+</div>
+    </form>
     </div>
   </div>
 
