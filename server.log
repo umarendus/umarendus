@@ -12,4 +12,6 @@
  ✓ Ready in 1053ms
    Reload env: .env.local
    Reload env: .env.local
-   Reload env: .env.   Reload env: .env.local
+   Reload env: .env.   Rel[?25h
+: .env.local
+[?25h
