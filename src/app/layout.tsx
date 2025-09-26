@@ -1,11 +1,11 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
   title: "UM Arendus",
   description:
     "Loome AI-toega kaasaegseid veebilehti, mis aitavad sul jõuda klientideni soodsama hinnaga.",
-  manifest: "/manifest.json", // siit läheb su manifest
+  manifest: "/manifest.json",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -14,6 +14,9 @@ export const metadata: Metadata = {
       { url: "/icon0.svg", type: "image/svg+xml" },
     ],
   },
+};
+
+export const viewport: Viewport = {
   themeColor: "#ffffff",
 };
 
@@ -24,6 +27,14 @@ export default function RootLayout({
     <html lang="et">
       <head>
         <link rel="preload" as="image" href="/section1-bg.webp" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" href="/icon1.png" sizes="192x192" />
+        <link
+          rel="apple-touch-icon"
+          type="image/png"
+          href="/apple-icon.png"
+          sizes="180x180"
+        />
       </head>
       <body className="antialiased">{children}</body>
     </html>
