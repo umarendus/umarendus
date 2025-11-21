@@ -5,7 +5,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
-const sections = ["meist", "teenused", "protsess", "hinnapoliitika", "kontakt"];
+const sections = ["meist","tehtud-tood", "teenused", "protsess", "hinnapoliitika", "kontakt"];
+
+const sectionNames: { [key: string]: string } = {
+  meist: "MEIST",
+  teenused: "TEENUSED",
+  "tehtud-tood": "TEHTUD TÖÖD",
+  protsess: "PROTSESS",
+  hinnapoliitika: "HINNAPOLIITIKA",
+  kontakt: "KONTAKT",
+};
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -89,7 +98,7 @@ export default function Header() {
         {/* Logo */}
                 <Link
   href="/"
-  className="relative flex items-center h-full hover:opacity-80 transition-opacity"
+  className="relative flex items-center h-full hover:opacity-80 transition-opacity lg:cursor-pointer"
 >
   <Image
     src="/logo.svg"
@@ -108,7 +117,7 @@ export default function Header() {
               <button
                 key={id}
                 onClick={() => scrollToSection(id)}
-                className={`relative font-medium text-sm tracking-wide transition-colors duration-300 ${
+                className={`relative font-medium text-sm tracking-wide transition-colors duration-300 lg:cursor-pointer ${
                   active === id
                     ? "text-gray-900 font-semibold"
                     : active === ""
@@ -116,7 +125,7 @@ export default function Header() {
                     : "text-gray-600 hover:text-gray-900"
                 }`}
               >
-                {id.toUpperCase()}
+                {sectionNames[id]}
                 {active === id && (
                   <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gray-900 transition-all duration-300" />
                 )}
@@ -128,7 +137,7 @@ export default function Header() {
         {/* CTA Button */}
         <button
           onClick={() => scrollToSection("kontakt")}
-          className={`hidden lg:block transition-transform duration-300 ${
+          className={`hidden lg:block transition-transform duration-300 lg:cursor-pointer ${
             active === "kontakt" ? "scale-110 text-gray-900" : "hover:scale-110 text-gray-800"
           }`}
         >
@@ -185,7 +194,7 @@ export default function Header() {
                     onClick={() => handleMobileClick(id)}
                     className="block text-black text-2xl font-semibold  tracking-wide hover:text-gray-700 transition-colors"
                   >
-                    {id.toUpperCase()}
+                    {sectionNames[id]}
                   </button>
                 </motion.div>
               ))}
