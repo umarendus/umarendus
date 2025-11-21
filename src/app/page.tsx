@@ -228,7 +228,7 @@ emailjs.send(
       <Header />
       
       {/* Hero Section */}
-<section id="meist" className="relative flex items-center pt-16" style={{ height: '100dvh' }}>
+<section id="meist" className="relative flex items-center pt-16" style={{ height: '600px', minHeight: '600px' }}>
   {/* Background Image */}
   <div 
     className="absolute inset-0 bg-cover bg-left bg-no-repeat"
