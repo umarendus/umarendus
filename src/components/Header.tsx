@@ -93,8 +93,8 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/70 backdrop-blur-md px-6 py-0 border-b border-white/20">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full h-16 bg-white/70 backdrop-blur-md px-6 border-b border-white/20">
+      <div className="max-w-7xl mx-auto flex items-center justify-between h-full">
         {/* Logo */}
                 <Link
   href="/"
@@ -175,7 +175,7 @@ export default function Header() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="fixed top-15 left-0 right-0  z-50 bg-white/98"
+            className="fixed top-16 left-0 right-0 z-50 bg-white/98"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
