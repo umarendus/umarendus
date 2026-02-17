@@ -6,7 +6,7 @@ import React from "react";
 import Link from "next/link";
 
 import Image from "next/image";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useLayoutEffect } from "react";
 import emailjs from "@emailjs/browser";
 import { motion, useMotionValue, useSpring, Variants } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
@@ -229,12 +229,14 @@ useEffect(() => {
   const [active, setActive] = useState(1);
   const [userInteracted, setUserInteracted] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 1024 : false
+  );
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
 
   // Check if screen is desktop size (lg breakpoint: 1024px)
-  useEffect(() => {
+  useLayoutEffect(() => {
     const checkScreenSize = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
@@ -486,23 +488,11 @@ emailjs.send(
     {/* Portfolio grid */}
     <div className="flex flex-wrap justify-center gap-8 md:gap-6">
       {portfolio.map((project, index) => (
-        <motion.a
+        <a
           key={project.domain}
           href={project.url}
           target="_blank"
           rel="noopener noreferrer"
-          {...(isDesktop
-            ? {
-                initial: { opacity: 0 },
-                whileInView: { opacity: 1 },
-                transition: { duration: 0.8, delay: index * 0.1 },
-                viewport: { once: true },
-              }
-            : {
-                initial: false,
-                animate: { opacity: 1 },
-                transition: { duration: 0 },
-              })}
           className="group relative bg-white/10 hover:bg-white/20 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] aspect-square"
         >
           {/* Background image with brightness adjustment */}
@@ -561,7 +551,7 @@ emailjs.send(
 
           {/* Bottom accent line */}
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-300 to-gray-400 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
-        </motion.a>
+        </a>
       ))}
     </div>
 
@@ -765,12 +755,8 @@ emailjs.send(
       {/* Kaardid */}
       <div className="flex md:grid md:grid-cols-4 gap-6 md:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory touch-pan-x">
         {services.map((s, index) => (
-          <motion.div
+          <div
             key={s.title}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: index * 0.1 }}
-            viewport={{ once: true }}
             className="relative rounded-2xl overflow-hidden shadow-md group 
                        flex-shrink-0 w-[50%] sm:w-[40%] md:w-auto aspect-[2/3] snap-start mx-2 md:mx-0"
           >
@@ -787,7 +773,7 @@ emailjs.send(
                             text-base font-bold text-center w-[calc(100%-16px)]">
               {s.title}
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
