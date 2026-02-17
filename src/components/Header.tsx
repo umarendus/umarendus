@@ -4,23 +4,20 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
-const sections = ["meist","tehtud-tood", "teenused", "protsess", "hinnapoliitika", "kontakt"];
-
-const sectionNames: { [key: string]: string } = {
-  meist: "MEIST",
-  teenused: "TEENUSED",
-  "tehtud-tood": "TEHTUD TÖÖD",
-  protsess: "PROTSESS",
-  hinnapoliitika: "HINNAPOLIITIKA",
-  kontakt: "KONTAKT",
-};
+const sections = ["kodu", "tehtud-tood", "meist", "teenused", "protsess", "hinnapoliitika", "kontakt"];
 
 export default function Header() {
+  const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [active, setActive] = useState("");
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'et' ? 'en' : 'et');
+  };
 
   // Custom scroll handler (smooth + offset)
   const scrollToSection = (id: string) => {
@@ -94,21 +91,23 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full h-16 bg-white/70 backdrop-blur-md px-6 border-b border-white/20">
-      <div className="max-w-7xl mx-auto flex items-center justify-between h-full">
-        {/* Logo */}
-                <Link
-  href="/"
-  className="relative flex items-center h-full hover:opacity-80 transition-opacity lg:cursor-pointer"
->
-  <Image
-    src="/logo.svg"
-    alt="Logo"
-    width={0}
-    height={0}
-    sizes="100vh"
-    className="h-full w-auto object-contain"
-  />
-</Link>
+      <div className="max-w-7xl mx-auto flex items-center h-full">
+        {/* Logo Container */}
+        <div className="flex-1 flex justify-start">
+          <Link
+            href="/"
+            className="relative flex items-center h-full hover:opacity-80 transition-opacity lg:cursor-pointer"
+          >
+            <Image
+              src="/logo.svg"
+              alt="Logo"
+              width={0}
+              height={0}
+              sizes="100vh"
+              className="h-full w-auto object-contain"
+            />
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-10">
@@ -125,7 +124,7 @@ export default function Header() {
                     : "text-gray-600 hover:text-gray-900"
                 }`}
               >
-                {sectionNames[id]}
+                {t(`nav.${id}`)}
                 {active === id && (
                   <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gray-900 transition-all duration-300" />
                 )}
@@ -134,41 +133,47 @@ export default function Header() {
           )}
         </nav>
 
-        {/* CTA Button */}
-        <button
-          onClick={() => scrollToSection("kontakt")}
-          className={`hidden lg:block transition-transform duration-300 lg:cursor-pointer ${
-            active === "kontakt" ? "scale-110 text-gray-900" : "hover:scale-110 text-gray-800"
-          }`}
-        >
-          <Image
-            src="/sinu-leht.svg"
-            alt="Sinu Leht - Kirjuta Meile"
-            width={100}
-            height={50}
-            className="h-9 w-auto"
-          />
-        </button>
-
-        {/* Mobile menu button */}
-        <button
-          onClick={toggleMobileMenu}
-          className="lg:hidden text-black p-2 rounded-md transition-transform duration-200 ease-in-out"
-          aria-label="Toggle mobile menu"
-        >
-          <svg
-            className={`w-8 h-8 transition-transform duration-200 ${mobileMenuOpen ? "rotate-90" : ""}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* CTA & Mobile Menu Container */}
+        <div className="flex-1 flex justify-end items-center gap-4">
+          {/* Language Switcher Desktop */}
+          <button
+            onClick={toggleLanguage}
+            className="hidden lg:flex items-center px-4 py-1.5 rounded-full border border-black/10 text-sm font-medium text-black hover:bg-gray-50 transition-all cursor-pointer"
           >
-            {mobileMenuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
+            {language === 'et' ? 'ET' : 'EN'}
+          </button>
+
+          <button
+            onClick={() => scrollToSection("kontakt")}
+            className={`hidden lg:block px-4 py-1.5 rounded-full font-medium text-sm transition-all duration-300 lg:cursor-pointer border border-black/10 ${
+              active === "kontakt" 
+                ? "bg-white text-black scale-105" 
+                : "bg-white text-black hover:bg-gray-50 hover:scale-105"
+            }`}
+          >
+            {t('nav.writeToUs')}
+          </button>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={toggleMobileMenu}
+            className="lg:hidden text-black p-2 rounded-md transition-transform duration-200 ease-in-out"
+            aria-label="Toggle mobile menu"
+          >
+            <svg
+              className={`w-8 h-8 transition-transform duration-200 ${mobileMenuOpen ? "rotate-90" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {mobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -194,24 +199,28 @@ export default function Header() {
                     onClick={() => handleMobileClick(id)}
                     className="block text-black text-2xl font-semibold  tracking-wide hover:text-gray-700 transition-colors"
                   >
-                    {sectionNames[id]}
+                    {t(`nav.${id}`)}
                   </button>
                 </motion.div>
               ))}
+
+              {/* Language Switcher Mobile */}
+              <motion.div variants={itemVariants}>
+                <button
+                  onClick={toggleLanguage}
+                  className="px-6 py-2 border border-black/10 rounded-full font-medium text-black text-lg hover:bg-gray-50 transition-colors"
+                >
+                  {language === 'et' ? 'English' : 'Eesti'}
+                </button>
+              </motion.div>
 
               {/* CTA */}
               <motion.div variants={itemVariants}>
                 <button
                   onClick={() => handleMobileClick("kontakt")}
-                  className="flex justify-center mb-6 hover:opacity-80 transition-opacity"
+                  className="px-8 py-3 bg-black text-white rounded-full font-medium text-xl hover:bg-gray-800 transition-colors"
                 >
-                  <Image
-                    src="/sinu-leht.svg"
-                    alt="Kirjuta Meile"
-                    width={100}
-                    height={50}
-                    className="h-14 w-auto "
-                  />
+                  {t('nav.writeToUs')}
                 </button>
 
                 {/* Socials */}

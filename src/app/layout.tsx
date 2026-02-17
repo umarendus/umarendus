@@ -1,5 +1,7 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import { LanguageProvider } from "@/context/LanguageContext";
+import LanguageSync from "@/components/LanguageSync";
 
 export const metadata: Metadata = {
   title: "UM Arendus",
@@ -26,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="et">
       <head>
-        <link rel="preload" as="image" href="/section1-bg.webp" />
+        <link rel="preload" as="image" href="/Hero BG.webp" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" href="/icon1.png" sizes="192x192" />
         <link
@@ -36,7 +38,12 @@ export default function RootLayout({
           sizes="180x180"
         />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <LanguageProvider>
+          <LanguageSync />
+          {children}
+        </LanguageProvider>
+      </body>
     </html>
   );
 }
