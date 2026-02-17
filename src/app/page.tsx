@@ -342,26 +342,28 @@ emailjs.send(
   {/* Badges Layer (Z-30) */}
   <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
     <div className="relative w-full h-full max-w-7xl mx-auto">
-      <ProximityBadge 
-        className="absolute top-[15%] left-[5%] md:top-[20%] md:left-[10%] bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-1 rounded-full shadow-sm text-base font-medium text-gray-800 pointer-events-auto flex items-center gap-2"
-      >
+     <ProximityBadge 
+  className="hidden sm:flex absolute top-[10%] left-[2%] md:top-[20%] md:left-[10%] bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-1 rounded-full shadow-sm text-base font-medium text-gray-800 pointer-events-auto items-center gap-2"
+>
+
         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
         {t('hero.badgeDesign')}
       </ProximityBadge>
-      <ProximityBadge 
-        className="absolute top-[25%] right-[5%] md:top-[15%] md:right-[10%] bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-1 rounded-full shadow-sm text-base font-medium text-gray-800 pointer-events-auto flex items-center gap-2"
-      >
+     <ProximityBadge 
+  className="hidden sm:flex absolute top-[20%] right-[2%] md:top-[15%] md:right-[10%] bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-1 rounded-full shadow-sm text-base font-medium text-gray-800 pointer-events-auto items-center gap-2"
+>
+
         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
         {t('hero.badgeWeb')}
       </ProximityBadge>
       <ProximityBadge 
-        className="absolute bottom-[20%] left-[5%] md:bottom-[25%] md:left-[10%] bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-1 rounded-full shadow-sm text-base font-medium text-gray-800 pointer-events-auto flex items-center gap-2"
+        className="hidden sm:flex absolute bottom-[20%] left-[2%] md:bottom-[25%] md:left-[10%] bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-1 rounded-full shadow-sm text-base font-medium text-gray-800 pointer-events-auto items-center gap-2"
       >
         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
         {t('hero.badgeWordpress')}
       </ProximityBadge>
       <ProximityBadge 
-        className="absolute bottom-[15%] right-[5%] md:bottom-[20%] md:right-[10%] bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-1 rounded-full shadow-sm text-base font-medium text-gray-800 pointer-events-auto flex items-center gap-2"
+        className="hidden sm:flex absolute bottom-[10%] right-[2%] md:bottom-[20%] md:right-[10%] bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-1 rounded-full shadow-sm text-base font-medium text-gray-800 pointer-events-auto items-center gap-2"
       >
         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
         {t('hero.badgeAdmin')}
@@ -489,10 +491,18 @@ emailjs.send(
           href={project.url}
           target="_blank"
           rel="noopener noreferrer"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: index * 0.1 }}
-          viewport={{ once: true }}
+          {...(isDesktop
+            ? {
+                initial: { opacity: 0 },
+                whileInView: { opacity: 1 },
+                transition: { duration: 0.8, delay: index * 0.1 },
+                viewport: { once: true },
+              }
+            : {
+                initial: false,
+                animate: { opacity: 1 },
+                transition: { duration: 0 },
+              })}
           className="group relative bg-white/10 hover:bg-white/20 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] aspect-square"
         >
           {/* Background image with brightness adjustment */}
@@ -814,7 +824,8 @@ emailjs.send(
   </div>
 
   {/* Alumine joon */}
-  <hr className="absolute left-0 w-full border-t bottom-[570px] md:bottom-[180px]" />
+ <hr className="hidden lg:block absolute left-0 w-full border-t bottom-[570px] md:bottom-[180px]" />
+
 </section>
 
 
