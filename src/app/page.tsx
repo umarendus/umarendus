@@ -158,18 +158,18 @@ export default function Home() {
 
   const portfolio = [
     {
-      title: "Helikuju",
-      domain: "helikuju.ee",
-      url: "https://helikuju.ee",
+      title: "Edelstein",
+      domain: "edelstein.ee",
+      url: "https://edelstein.ee",
       description: t('portfolio.items.0.description'),
-      backgroundImage: "/helikuju-bg.webp"
+      backgroundImage: "/edelstein.webp"
     },
     {
-      title: "Villaveski",
-      domain: "villaveski.ee",
-      url: "https://villaveski.ee",
+      title: "LRV Sound",
+      domain: "lrvsound.com",
+      url: "https://lrvsound.com",
       description: t('portfolio.items.1.description'),
-      backgroundImage: "/villaveski-bg.webp"
+      backgroundImage: "/lrvsound.webp"
     },
     {
       title: "Loconuts",
@@ -179,18 +179,18 @@ export default function Home() {
       backgroundImage: "/loconuts-bg.webp"
     },
     {
-      title: "LRV Sound",
-      domain: "lrvsound.com",
-      url: "https://lrvsound.com",
+      title: "Villaveski",
+      domain: "villaveski.ee",
+      url: "https://villaveski.ee",
       description: t('portfolio.items.3.description'),
-      backgroundImage: "/lrvsound.webp"
+      backgroundImage: "/villaveski-bg.webp"
     },
     {
-      title: "Edelstein",
-      domain: "edelstein.ee",
-      url: "https://edelstein.ee",
+      title: "Helikuju",
+      domain: "helikuju.ee",
+      url: "https://helikuju.ee",
       description: t('portfolio.items.4.description'),
-      backgroundImage: "/edelstein.webp"
+      backgroundImage: "/helikuju-bg.webp"
     },
   ];
 
@@ -754,7 +754,7 @@ emailjs.send(
 
       {/* Kaardid */}
       <div className="flex md:grid md:grid-cols-4 gap-6 md:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory touch-pan-x">
-        {services.map((s, index) => (
+        {services.map((s) => (
           <div
             key={s.title}
             className="relative rounded-2xl overflow-hidden shadow-md group 

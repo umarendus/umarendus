@@ -42,11 +42,11 @@ const translations: Translations = {
       viewSite: "Vaata veebilehte",
       socialTitle: "Tahad kursis olla meie töödega? Jälgi meid sotsiaalmeedias!",
       items: [
-        { description: "Kaasaegne veebileht heliloominguga seotud teenuste jaoks" },
-        { description: "Inspireeriv koduleht traditsioonilist käsitööd väärtustavale ettevõttele" },
-        { description: "Professionaalne veebileht bändile, kes tahab muusikamaailmas silma paista" },
-        { description: "Marcus Ellervee heliproduktsiooni portfoolio ja teenuste esitlus" },
         { description: "Kvaliteetsete kivipindade valmistamine ja paigaldus eritellimusel" },
+        { description: "Marcus Ellervee heliproduktsiooni portfoolio ja teenuste esitlus" },
+        { description: "Professionaalne veebileht bändile, kes tahab muusikamaailmas silma paista" },
+        { description: "Inspireeriv koduleht traditsioonilist käsitööd väärtustavale ettevõttele" },
+        { description: "Kaasaegne veebileht heliloominguga seotud teenuste jaoks" },
       ]
     },
     about: {
@@ -164,11 +164,11 @@ const translations: Translations = {
       viewSite: "Visit website",
       socialTitle: "Want to stay updated with our work? Follow us on social media!",
       items: [
-        { description: "Modern website for music composition services" },
-        { description: "Inspiring website for a company valuing traditional crafts" },
-        { description: "Professional website for a band wanting to stand out in the music world" },
-        { description: "Marcus Ellervee's sound production portfolio and service presentation" },
         { description: "Custom manufacturing and installation of high-quality stone surfaces" },
+        { description: "Marcus Ellervee's sound production portfolio and service presentation" },
+        { description: "Professional website for a band wanting to stand out in the music world" },
+        { description: "Inspiring website for a company valuing traditional crafts" },
+        { description: "Modern website for music composition services" },
       ]
     },
     about: {
