@@ -3,7 +3,6 @@
 import Header from "../components/Header";
 import AnimatedGrid from "../components/AnimatedGrid";
 import React from "react";
-import Link from "next/link";
 
 import Image from "next/image";
 import { useState, useEffect, useRef, useMemo, useLayoutEffect } from "react";
@@ -416,15 +415,13 @@ emailjs.send(
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <Link href="#teenused" scroll={true}>
-          <button className="group relative bg-gray-900 hover:bg-black text-white px-10 py-4 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden cursor-pointer">
+        <button onClick={() => { const el = document.getElementById('teenused'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 68; window.scrollTo({ top, behavior: 'smooth' }); } }} className="group relative bg-gray-900 hover:bg-black text-white px-10 py-4 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden cursor-pointer">
             <span className="relative z-10">{t('hero.cta')}</span>
             <motion.div 
               className="absolute inset-0 bg-gradient-to-r from-blue-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               initial={false}
             />
           </button>
-        </Link>
       </motion.div>
     </motion.div>
 
@@ -798,12 +795,10 @@ emailjs.send(
         {t('services.result')}
       </p>
       <div className="flex justify-start">
-        <button className="px-5 py-2 mb-20 md:mb-0 rounded-full border border-black bg-black text-white font-bold 
+        <button onClick={() => { const el = document.getElementById('kontakt'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 68; window.scrollTo({ top, behavior: 'smooth' }); } }} className="px-5 py-2 mb-20 md:mb-0 rounded-full border border-black bg-black text-white font-bold
                            translate-y-8 hover:bg-gray-800 transform hover:translate-y-7
-                           transition-all duration-300 ease-in-out">
-          <Link href="#kontakt">
-            {t('services.cta')} 
-          </Link>
+                           transition-all duration-300 ease-in-out cursor-pointer">
+          {t('services.cta')}
         </button>
       </div>
     </motion.div>
